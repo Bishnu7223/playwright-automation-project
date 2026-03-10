@@ -10,7 +10,6 @@ export class timeSheet {
         await this.page.locator('#username').fill(email);
         await this.page.locator('#userPassword').fill(password);
         await this.page.getByRole('button', { name: 'LOG IN' }).click();
-        await this.page.pause();
         await this.page.getByRole('button', { name: 'Confirm' }).click();
     }
 
