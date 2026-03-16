@@ -16,8 +16,8 @@ export class timeSheet {
 
     async addTimeSheet(date) {
         await this.page.locator('p:has-text("Apply Timesheet")').click();
-        for (let i = 1; i <= date.length; i++) {
-            await this.fillTimeSheet(date)
+        for (const day of date) {
+            await this.fillTimeSheet(day);
         }
     }
     async fillTimeSheet(date) {
@@ -28,17 +28,18 @@ export class timeSheet {
         await this.page.getByPlaceholder('Select Project').click()
         await this.page.getByText('CO-FT-AT-TNM-AXISBANK-BSG-TCoE').click();
         await this.page.locator('select').nth(1).selectOption("Filled");
-        await this.page.locator('#mat-select-10 svg').click();
+        await this.uploadFile()
+        await this.page.locator('(((//*[text()="In Time"])[1]//following-sibling::div//mat-form-field)[1]//div)').first().click();
         await this.page.getByRole('option', { name: '09' }).click();
-        await this.page.locator('#mat-select-11 svg').click();
+        await this.page.locator('(((//*[text()="In Time"])[1]//following-sibling::div//mat-form-field)[2]//div)').first().click();
         await this.page.getByRole('option', { name: '00' }).click();
-        await this.page.locator('#mat-select-12 svg').click();
+        await this.page.locator('(((//*[text()="In Time"])[1]//following-sibling::div//mat-form-field)[3]//div)').first().click();
         await this.page.getByText('AM', { exact: true }).click();
-        await this.page.locator('#mat-select-13 svg').click();
+        await this.page.locator('(((//*[text()="Out Time"])[1]//following-sibling::div//mat-form-field)[1]//div)').first().click();
         await this.page.getByRole('option', { name: '07' }).click();
-        await this.page.locator('#mat-select-14 > .mat-mdc-select-trigger > .mat-mdc-select-arrow-wrapper > .mat-mdc-select-arrow > svg').click();
-        await this.page.locator('#mat-option-244').getByText('00').click();
-        await this.page.locator('#mat-select-15 > .mat-mdc-select-trigger > .mat-mdc-select-arrow-wrapper > .mat-mdc-select-arrow > svg').click();
+        await this.page.locator('(((//*[text()="Out Time"])[1]//following-sibling::div//mat-form-field)[2]//div)').first().click();
+        await this.page.getByRole('option', { name: '00' }).click();
+        await this.page.locator('(((//*[text()="Out Time"])[1]//following-sibling::div//mat-form-field)[3]//div)').first().click();
         await this.page.getByText('PM', { exact: true }).click();
         await this.page.getByRole('checkbox', { name: 'Same as ApMoSys In-time and' }).check();
         await this.page.getByText('Select Client', { exact: true }).click();
@@ -50,6 +51,9 @@ export class timeSheet {
         await this.page.locator('#dayTypeCursor').nth(1).selectOption('44157');
         await this.page.getByRole('spinbutton').click();
         await this.page.getByRole('spinbutton').fill('10');
-        await page.getByRole('button', { name: 'Create Timesheet' }).click();
+        await this.page.getByRole('button', { name: 'Create Timesheet' }).click();
+    }
+    async uploadFile() {
+        await this.page.locator("//input[@type='file']").setInputFiles(".Files/attend.jpeg");
     }
 }
